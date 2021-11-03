@@ -19,6 +19,7 @@ function hammingEncode_7_4(inp: string): string {
             outArr[i] = arr[lastWrittenPos];
             // update parity bits
             parityPos.forEach(pos => {
+                // check if bit is resposible for current bit 
                 if (((i + 1) & (pos)) > 0) {
                     outArr[pos - 1] = ((outArr[pos - 1] ?? 0) + arr[lastWrittenPos]) % 2;
                 }
@@ -32,18 +33,19 @@ function hammingDecode_7_4(inp: string): string {
     let arr: number[] = inp.split("").map(str => parseInt(str));
     const parityPos: number[] = [];
     const parityBits: number[] = [];
-
+    
     // calc bit positions
     const highestExponent: number = Math.ceil(Math.log2(inp.length));
     for (let i: number = 0; i <= highestExponent; i++) {
         parityPos.push(2 ** i);
     }
-
+    
     // fill other positions
     for (let i: number = 0; i < inp.length; i++) {
         // update parity bits
         for (let index: number = 0; index < parityPos.length; index++) {
             let pos = parityPos[index];
+            // check if bit is resposible for current bit 
             if (((i + 1) & (pos)) > 0) {
                 parityBits[index] = ((parityBits[index] ?? 0) + arr[i]) % 2;
             }

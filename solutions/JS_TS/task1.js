@@ -17,6 +17,7 @@ function hammingEncode_7_4(inp) {
             // update parity bits
             parityPos.forEach(function (pos) {
                 var _a;
+                // check if bit is resposible for current bit 
                 if (((i + 1) & (pos)) > 0) {
                     outArr[pos - 1] = (((_a = outArr[pos - 1]) !== null && _a !== void 0 ? _a : 0) + arr[lastWrittenPos]) % 2;
                 }
@@ -44,6 +45,7 @@ function hammingDecode_7_4(inp) {
         // update parity bits
         for (var index = 0; index < parityPos.length; index++) {
             var pos = parityPos[index];
+            // check if bit is resposible for current bit 
             if (((i + 1) & (pos)) > 0) {
                 parityBits[index] = (((_a = parityBits[index]) !== null && _a !== void 0 ? _a : 0) + arr[i]) % 2;
             }
@@ -57,9 +59,15 @@ function hammingDecode_7_4(inp) {
     if (wrongPosition) {
         arr[wrongPosition - 1] = Math.abs(arr[wrongPosition - 1] - 1);
     }
-    console.log(wrongPosition);
+    // get data bits
+    arr = arr.filter(function (val, ind) {
+        return !parityPos.includes(ind + 1);
+    });
     return arr.join("");
 }
-console.log(hammingDecode_7_4(bitstringToDecode));
-// console.log("bitstring : '" + bitstring + "'");
-// console.log("hamming encoded code: '" + hammingEncode_7_4(bitstring) + "'");
+console.info("\t --ENCODING--");
+console.log("bitstring : '" + bitstring + "'");
+console.log("hamming encoded bits: '" + hammingEncode_7_4(bitstring) + "'");
+console.info("\t --DECODING--");
+console.log("hamming encoded bits: '" + bitstringToDecode + "'");
+console.log("hamming decoded bits: '" + hammingDecode_7_4(bitstringToDecode) + "'");
