@@ -35,17 +35,21 @@ function hammingDecode_7_4(inp: string): string {
     const parityBits: number[] = [];
     
     // calc bit positions
-    const highestExponent: number = Math.ceil(Math.log2(inp.length));
+    const highestExponent: number = Math.floor(Math.log2(inp.length));
     for (let i: number = 0; i <= highestExponent; i++) {
         parityPos.push(2 ** i);
     }
-    
     // fill other positions
     for (let i: number = 0; i < inp.length; i++) {
         // update parity bits
         for (let index: number = 0; index < parityPos.length; index++) {
             let pos = parityPos[index];
             // check if bit is resposible for current bit 
+            // ex parity bit 4: 0100 
+            //               5: 0101
+            //            (4+1) & 5 = 0101 > 0
+            // if parity bit is responsible for current bit, (parityBit + 1) & (parityValue) > 0
+
             if (((i + 1) & (pos)) > 0) {
                 parityBits[index] = ((parityBits[index] ?? 0) + arr[i]) % 2;
             }
