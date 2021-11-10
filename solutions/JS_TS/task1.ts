@@ -1,7 +1,7 @@
 const bitstring: string = "0110001";
 const bitstringToDecode: string = "00011110000";
 
-function hammingEncode_7_4(inp: string): string {
+function hammingEncode(inp: string): string {
     const arr: number[] = inp.split("").map(str => parseInt(str));
     const outArr: number[] = [];
     const parityPos: number[] = [];
@@ -14,7 +14,7 @@ function hammingEncode_7_4(inp: string): string {
 
     // fill other positions
     let lastWrittenPos: number = 0;
-    for (let i: number = 0; i < 11; i++) {
+    for (let i: number = 0; i < arr.length + parityPos.length; i++) {
         if (!(parityPos.includes(i + 1))) {
             outArr[i] = arr[lastWrittenPos];
             // update parity bits
@@ -29,7 +29,7 @@ function hammingEncode_7_4(inp: string): string {
     }
     return outArr.join("");
 }
-function hammingDecode_7_4(inp: string): string {
+function hammingDecode(inp: string): string {
     let arr: number[] = inp.split("").map(str => parseInt(str));
     const parityPos: number[] = [];
     const parityBits: number[] = [];
@@ -71,7 +71,7 @@ function hammingDecode_7_4(inp: string): string {
 }
 console.info("\t --ENCODING--");
 console.log("bitstring : '" + bitstring + "'");
-console.log("hamming encoded bits: '" + hammingEncode_7_4(bitstring) + "'");
+console.log("hamming encoded bits: '" + hammingEncode(bitstring) + "'");
 console.info("\t --DECODING--");
 console.log("hamming encoded bits: '" + bitstringToDecode + "'");
-console.log("hamming decoded bits: '" + hammingDecode_7_4(bitstringToDecode) + "'");
+console.log("hamming decoded bits: '" + hammingDecode(bitstringToDecode) + "'");
