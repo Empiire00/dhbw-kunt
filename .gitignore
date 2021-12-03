@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+solutions/Rust/Cargo.lock
+solutions/Rust/Cargo.toml
+solutions/Rust/Rust.iml
+solutions/Rust/.idea/
+solutions/Rust/target/

@@ -1,7 +1,7 @@
 const bitstring: string = "0110001";
 const bitstringToDecode: string = "00011110000";
 
-function hammingEncode_7_4(inp: string): string {
+function hammingEncode(inp: string): string {
     const arr: number[] = inp.split("").map(str => parseInt(str));
     const outArr: number[] = [];
     const parityPos: number[] = [];
@@ -14,7 +14,7 @@ function hammingEncode_7_4(inp: string): string {
 
     // fill other positions
     let lastWrittenPos: number = 0;
-    for (let i: number = 0; i < 11; i++) {
+    for (let i: number = 0; i < arr.length + parityPos.length; i++) {
         if (!(parityPos.includes(i + 1))) {
             outArr[i] = arr[lastWrittenPos];
             // update parity bits
@@ -29,23 +29,27 @@ function hammingEncode_7_4(inp: string): string {
     }
     return outArr.join("");
 }
-function hammingDecode_7_4(inp: string): string {
+function hammingDecode(inp: string): string {
     let arr: number[] = inp.split("").map(str => parseInt(str));
     const parityPos: number[] = [];
     const parityBits: number[] = [];
     
     // calc bit positions
-    const highestExponent: number = Math.ceil(Math.log2(inp.length));
+    const highestExponent: number = Math.floor(Math.log2(inp.length));
     for (let i: number = 0; i <= highestExponent; i++) {
         parityPos.push(2 ** i);
     }
-    
     // fill other positions
     for (let i: number = 0; i < inp.length; i++) {
         // update parity bits
         for (let index: number = 0; index < parityPos.length; index++) {
             let pos = parityPos[index];
             // check if bit is resposible for current bit 
+            // ex parity bit 4: 0100 
+            //               5: 0101
+            //            (4+1) & 5 = 0101 > 0
+            // if parity bit is responsible for current bit, (parityBit + 1) & (parityValue) > 0
+
             if (((i + 1) & (pos)) > 0) {
                 parityBits[index] = ((parityBits[index] ?? 0) + arr[i]) % 2;
             }
@@ -67,7 +71,7 @@ function hammingDecode_7_4(inp: string): string {
 }
 console.info("\t --ENCODING--");
 console.log("bitstring : '" + bitstring + "'");
-console.log("hamming encoded bits: '" + hammingEncode_7_4(bitstring) + "'");
+console.log("hamming encoded bits: '" + hammingEncode(bitstring) + "'");
 console.info("\t --DECODING--");
 console.log("hamming encoded bits: '" + bitstringToDecode + "'");
-console.log("hamming decoded bits: '" + hammingDecode_7_4(bitstringToDecode) + "'");
+console.log("hamming decoded bits: '" + hammingDecode(bitstringToDecode) + "'");
